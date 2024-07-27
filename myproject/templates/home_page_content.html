@@ -1,0 +1,160 @@
+{% load static %}
+
+
+<!-- Feadtued Categories -->
+
+    
+
+
+    <!-- Offer -->
+    <div class="offer">
+        <div class="small-container">
+            <div class="row">
+                <div class="col-2">
+                    <img src="/static/images/banner_nike2.png" class="offer-img">
+                </div>
+                <div class="col-2">
+                    <p>Exclusively Available on AD Cart</p>
+                    <h1>Nike Jordan Series</h1>
+                    <p>"Step into greatness with Nike Jordan" – the ultimate blend of heritage and innovation, crafted for those who aim to soar above the rest.<br></p>
+                    <a href="{% url 'list_product' %}" class="btn">Buy Now &#8594;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<div class="categories">
+    <div class="small-container">
+        <div class="row">
+            <div class="col-3">
+                <img src="/static/images/category-1.jpg">
+            </div>
+            <div class="col-3">
+                <img src="/static/images/category-2.jpg">
+            </div>
+            <div class="col-3">
+                <img src="/static/images/category-3.jpg">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Featured Products -->
+<div class="small-container">
+    <h2 class="title">Featured Products</h2>
+    <div class="row">
+
+        {% for product in featured_products %}
+        <div class="col-4">
+            <a href="{% url 'detail_product' product.id  %}"><img src="{{ product.image.url }}">
+            <h4>{{product.title}}</h4>
+            <div class="rating">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star-o"></i>
+            </div>
+            <p>${{ product.price }}</p>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+
+    <h2 class="title">Latest Products</h2>
+    <div class='row'>
+
+    {% for product in latest_products%}
+    <div class="col-4">
+        <a href="{% url 'detail_product' product.id  %}"><img src="{{ product.image.url }}">
+        <h4>{{product.title}}</h4>
+        <div class="rating">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-o"></i>
+        </div>
+        <p>${{ product.price }}</p>
+        </a>
+    </div>
+    {% endfor%}
+    </div>
+</div>
+    
+    <!-- Testimonial -->
+    <div class="testimonial">
+        <div class="small-container">
+            <div class="row">
+                <div class="col-3">
+                    <i class="fa fa-quote-left"></i>
+                    <p>Your shoe store offers a stunning variety of styles, ensuring there's something for everyone,
+                         no matter their taste or occasion.</p>
+                    <div class="rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i> 
+                    </div>
+                    <img src="/static/images/user-1.png">
+                    <h3>Jessy </h3>
+                </div>
+                <div class="col-3">
+                    <i class="fa fa-quote-left"></i>
+                    <p>The user-friendly design of your website makes browsing and purchasing shoes a breeze,  
+                        enhancing the overall shopping experience.</p>
+                    <div class="rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                    </div>
+                    <img src="/static/images/user-2.png">
+                    <h3>Mike Smith</h3>
+                </div>
+                <div class="col-3">
+                    <i class="fa fa-quote-left"></i>
+                    <p>I appreciate the detailed product descriptions and high-quality images,
+                        which help me make confident choices when shopping online.</p>
+                    <div class="rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                    </div>
+                    <img src="/static/images/user-3.png">
+                    <h3>Catherine</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Brands -->
+
+    <div class="brands">
+        <div class="small-container">
+            <div class="row">
+                <div class="col-5">
+                    
+                </div>
+                <div class="col-5">
+                    <img src="/static/images/vecteezy_nike-logo-black-clothes-design-icon-abstract-football-vector_10994232.jpg">
+                </div>
+                <div class="col-5">
+                    <img src="/static/images/vecteezy_adidas-logo-symbol-clothes-design-icon-abstract-football_10994276.jpg">
+                </div>
+                <div class="col-5">
+                    <img src="/static/images/vecteezy_puma-logo-vector-illustration_21963704.jpg">
+                </div>
+                <div class="col-5">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    
+

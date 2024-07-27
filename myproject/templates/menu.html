@@ -1,0 +1,29 @@
+{% load static  %}
+
+<div class="navbar">
+    <div class="logo">
+        <a href="index.html"><img src='/static/images/ad_cart3.png' alt="logo" width="125px"></a>
+    </div>
+    <nav>
+        <ul id="MenuItems">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'list_product' %}">Products</a></li>
+
+            {% if user.is_superuser %}
+            <li><a href="{% url 'admin_dashboard' %}">Admin</a></li>
+            <li><a href="{% url 'seller_dashboard' %}">Seller</a></li>
+            <li><a href="{% url 'delivery_dashboard' %}">Delivery</a></li>
+            {% endif %}
+
+            <li><a href="">Contact</a></li>
+            {% if not user.is_authenticated %}
+            <li><a href="{% url 'account' %}">Account</a></li>
+            {% else %}
+            <li><a href="{% url 'orders' %}">Orders</a></li>
+            <li><a href="{% url 'logout' %}">Logout </a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    <a href="{% url 'cart' %}"><img src="/static/images/cart.png" width="30px" height="30px"></a>
+    <img src="/static/images/menu.png" class="menu-icon" onclick="menutoggle()">
+</div>

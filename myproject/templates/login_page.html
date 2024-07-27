@@ -1,0 +1,49 @@
+{% load static %}
+
+<!-- Account Page -->
+<div class="account-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-2">
+                <img src="/static/images/image1.png" width="100%">
+            </div>
+            <div class="col-2">
+                
+                <div class="form-container">
+                    <div class="message-container">
+                        {% if messages %}
+                        {% for message in messages %}
+                        <li class ="{{ message.tags }}"> {{message}} </li>
+                        {% endfor %}
+                        {% endif %}
+                        </div>
+                    <div class="form-btn">
+                        <span onclick="login()">Login</span>
+                        <span onclick="register()">Register</span>
+                        <hr id="Indicator">
+                    </div>
+
+                    <form id="LoginForm" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="text" name="username" placeholder="Username">
+                        <input type="password" name="password" placeholder="Password">
+                        <button type="submit" name=login class="btn">Login</button>
+                        <a href="">Forget Password</a>
+                    </form>
+
+                    <form id="RegForm" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="text" name="username" maxlength="8" required  placeholder="Username">
+                        <input type="text" name="email" required placeholder="Email">
+                        <input type="password" name="password" minlenth="4" required placeholder="Password">
+                        <input type="text" name="address" minlength="4" required placeholder="Address">
+                        <input type="text" name="phone" maxlength="10" required placeholder="Phone">
+                        <button type="submit" name="register" class="btn">Login</button>
+                        <a href="">Forget Password</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

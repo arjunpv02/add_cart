@@ -1,0 +1,69 @@
+{% load static %}
+{% load chunks %}
+
+<div class="small-container">
+    <div class="row row-2">
+        <h2>All Products</h2>
+        
+    </div>
+
+<!--    
+"""Explanation:
+Container and Header:
+The outer div with class small-container wraps the entire content.
+Inside it, there's a header section with the title "All Products".
+Product Listing:
+The for product_chunks in products|chunks:4 %} loop iterates over the products in chunks of 4, using the custom chunks filter.
+For each chunk, another loop  for product in product_chunks %} iterates over individual products.
+Each product is displayed in a div with class col-4, showing the product image, title, rating, and price.
+Pagination:
+The pagination section iterates over the page range of the paginator and creates links for each page."""
+    -->
+
+    {% for product_chunks in Products|chunks:4 %}
+
+    <div class="row">
+        {% for product in product_chunks%}
+
+        <div class="col-4">
+            <a href="{% url 'detail_product' product.id  %}"><img src="{{ product.image.url }}">
+            <h4>{{product.title}}</h4>
+            <div class="rating">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star-o"></i>
+            </div>
+            <p>${{ product.price }}</p>
+            </a>
+        </div>
+    {% endfor %}
+    </div>
+    
+    {% endfor %}
+
+    <div class="page-btn">
+
+        {% if Products.has_next %}
+        <a href="?page={{ products.next_page_number}}"><span>>></a></span>
+        {% endif %}
+
+        {% for i  in Products.paginator.page_range %}
+        <a href="?page={{i}}"><span>{{i}}</span></a>
+        {% endfor %}
+
+        {% if Products.has_previous %}
+        <a href="?page={{ products.previous_page_number}}"><span><<</a></span>
+        {% endif %}
+
+    </div>
+</div>
+
+<!--{% if products.has_next %}
+        <a href="?page={{ products.next_page_number}}"><span>>></a></span>
+        {% endif %}
+
+{% if products.has_previous %}
+        <a href="?page={{ products.previous_page_number}}"><span><<</a></span>
+        {% endif %}-->

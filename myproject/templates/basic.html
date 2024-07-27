@@ -1,0 +1,468 @@
+{% load multiply %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .chart-container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        canvas {
+            width: 100% !important;
+            height: 400px;
+        }
+
+
+        header {
+            background-color: #0073e6;
+            color: white;
+            padding: 1em;
+            text-align: center;
+        }
+        main {
+            padding: 2em;
+            max-width: 900px;
+            margin: auto;
+        }
+        .order {
+            background-color: #fff;
+            padding: 1em;
+            margin-bottom: 1em;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .order h3 {
+            margin: 0;
+            font-size: 1.2em;
+            color: #0073e6;
+        }
+        .order p {
+            margin: 0.5em 0;
+            color: #333;
+        }
+        .order-items {
+            margin-top: 1em;
+        }
+        .order-item {
+            padding: 0.5em;
+            margin-bottom: 1em;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        .order-item img {
+            width: 100px;
+            height: auto;
+            border-radius: 4px;
+        }
+        .order-item p {
+            margin: 0.5em 0;
+        }
+        footer {
+            text-align: center;
+            padding: 1em;
+            background-color: #0073e6;
+            color: white;
+        }
+        /* Add custom styling for the section and cards */
+    .section {
+        padding: 50px 0; /* Adjust padding as needed */
+    }
+    
+    .card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+    
+    .card-img-top {
+        height: 200px; /* Adjust image height as needed */
+        object-fit: cover;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+    
+    .card-body {
+        padding: 20px;
+    }
+    
+    .card-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    
+    .card-text {
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+    
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+    
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+    
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Orders Overview</h1>
+    </header>
+    <main>
+
+
+
+
+
+        <canvas id="salesChart" width="400" height="200"></canvas>
+
+
+
+
+
+
+
+<!-- ========== section start ========== -->
+<!-- ========== section start ========== -->
+<section class="section">
+    <div class="container-fluid">
+      <div class="row">
+        {% for product1 in product_sales_data %}
+        <div class="col-md-4">
+          <div class="card">
+            <img src="{{ product1.product__image }}" class="card-img-top" alt="{{ product1.product__title }}">
+            <div class="card-body">
+              <h5 class="card-title">{{ product1.product__title }}</h5>
+              <p class="card-text">Sales: {{ product1.num_sales }}</p>
+              <p class="card-text">Total Price: ${{ product1.total_price|floatformat:2 }}</p>
+              <p class="card-text">Revenue: ${{ product1.revenue|floatformat:2 }}</p>
+              <p class="card-text">Latest Date: {{ product1.latest_date|date:"Y-m-d" }}</p>
+              <!-- Add more details as needed -->
+              <a href="#" class="btn btn-primary">View Product</a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  <!-- ========== section end ========== -->
+  
+  <!-- ========== section end ========== -->
+  
+  <!-- ========== section end ========== -->
+  
+
+
+
+        
+    <!-- Product Sales Table -->
+    <div class="table-container">
+        <h2>Product Sales Overview</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Number of Sales</th>
+                    <th>Total Price ($)</th>
+                    <th>Revenew </th>
+                    <th>Latest date </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in product_sales_data %}
+                    <tr>
+                        <td>{{ product.product__title }}</td>
+                        <td>{{ product.num_sales }}</td>
+                        <td>{{ product.total_price|floatformat:2 }}</td>
+                        <td>{{ product.revenue|floatformat:2 }}</td>
+                        <td>{{ product.latest_date|date:"Y-m-d" }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+
+        <!-- End Title -->
+        <div class="chart">
+            <canvas id="Chart1" style="width: 100%; height: 400px; margin-left: -35px;"></canvas>
+        </div>
+        <!-- End Chart -->
+
+
+        
+                <!-- Debugging Section: Print dates and total_prices -->
+        <section>
+            <h3>Debug Information</h3>
+            <h4>Dates:</h4>
+            <ul>
+                {% for date in dates %}
+                    <li>{{ date }}</li>
+                {% endfor %}
+            </ul>
+
+            <h4>Total Prices:</h4>
+            <ul>
+                {% for price in total_prices %}
+                    <li>{{ price }}</li>
+                {% endfor %}
+            </ul>
+        </section>
+
+
+        <!-- Loop through each order -->
+        {% for o1 in orders %}
+            <div class="order">
+                <h3>Order ID: {{ o1.id }}</h3>
+                <p>Owner: {{ o1.owner }}</p>
+                <p>Updated At: {{ o1.updated_at }}</p>
+                <h3>Total Price: ${{ o1.total_price }}</h3>
+                <div class="order-items">
+                    <h4>Order Items:</h4>
+                    <!-- Loop through the related order items for this order -->
+                    {% for item in o1.added_items.all %}
+                        <div class="order-item">
+                            <p>Product: {{ item.product.title }}</p>
+                            <p>Quantity: {{ item.quantity }}</p>
+                            <p>Price: ${{ item.product.price }}</p>
+                            <p>total: {% multiply item.product.price item.quantity  %} </p>
+                            <p>Priority: {{ item.product.priority }}</p>
+                            <p>Image: <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}"></p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <hr>
+        {% endfor %}
+
+        <h1>Random Data Chart</h1>
+        <div class="chart-container">
+            <canvas id="randomChart"></canvas>
+        </div>
+    
+
+    </main>
+    <footer>
+        <p>&copy; 2023 My Basic HTML Page</p>
+    </footer>
+
+
+
+    <!-- ========= All Javascript files linkup ======== -->
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/Chart.min.js"></script>
+    <script src="assets/js/dynamic-pie-chart.js"></script>
+    <script src="assets/js/moment.min.js"></script>
+    <script src="assets/js/fullcalendar.js"></script>
+    <script src="assets/js/jvectormap.min.js"></script>
+    <script src="assets/js/world-merc.js"></script>
+    <script src="assets/js/polyfill.js"></script>
+    <script src="assets/js/main.js"></script>
+
+        <!-- Include Chart.js from CDN -->
+        <!-- <script src= "{% static '/static/chart.js' %}" ></script> -->
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Prepare the data from the template
+            const productSalesData = {{ product_sales_data|safe }};
+            console.log(productSalesData);  // Logs data to the console
+
+
+            // Extract the titles and number of sales
+            const productTitles = productSalesData.map(item => item.product_title);
+            const numSales = productSalesData.map(item => item.num_sales);
+
+            // Generate the bar chart
+            const ctx = document.getElementById('salesChart').getContext('2d');
+            const salesChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: productTitles,
+                    datasets: [{
+                        label: 'Number of Sales',
+                        data: numSales,
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1,
+                        borderRadius: 10,
+                        barThickness: 30,
+                        maxBarThickness: 40,
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Sales',
+                                font: {
+                                    size: 14,
+                                }
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Product Titles',
+                                font: {
+                                    size: 14,
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    return tooltipItems[0].label;
+                                },
+                                label: function(tooltipItem) {
+                                    return `Sales: ${tooltipItem.raw}`;
+                                }
+                            },
+                            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                            titleColor: '#333',
+                            bodyColor: '#333',
+                            borderColor: '#ccc',
+                            borderWidth: 1,
+                        },
+                        legend: {
+                            display: false
+                        }
+                    },
+                    layout: {
+                        padding: {
+                            left: 10,
+                            right: 10,
+                            top: 10,
+                            bottom: 10
+                        }
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false,
+                }
+            });
+        });
+    </script>
+
+
+
+
+
+
+
+
+        <script>
+            // Function to generate random dates for the past 30 days
+            function generateRandomDates() {
+                let dates = [];
+                let today = new Date();
+                for (let i = 29; i >= 0; i--) {
+                    let date = new Date();
+                    date.setDate(today.getDate() - i);
+                    dates.push(date.toISOString().split('T')[0]); // Format date as YYYY-MM-DD
+                }
+                return dates;
+            }
+    
+            // Function to generate random total prices
+            function generateRandomPrices() {
+                let prices = [];
+                for (let i = 0; i < 30; i++) {
+                    prices.push((Math.random() * (1000 - 100) + 100).toFixed(2)); // Random price between 100 and 1000
+                }
+                return prices;
+            }
+    
+            // Generate the random data
+            let dates = generateRandomDates();
+            let totalPrices = generateRandomPrices();
+    
+            // Debugging: print the generated data to console
+            console.log("Dates:", dates);
+            console.log("Total Prices:", totalPrices);
+    
+            // Initialize the chart
+            document.addEventListener('DOMContentLoaded', function() {
+                let ctx = document.getElementById('randomChart').getContext('2d');
+    
+                new Chart(ctx, {
+                    type: 'line', // Type of chart
+                    data: {
+                        labels: dates, // X-axis labels
+                        datasets: [{
+                            label: 'Total Price Over Time ($)',
+                            data: totalPrices, // Y-axis data points
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)', // Line fill color
+                            borderColor: 'rgba(75, 192, 192, 1)', // Line border color
+                            borderWidth: 2, // Line thickness
+                            fill: true, // Fill area under the line
+                            tension: 0.4 // Smoothing of the line
+                        }]
+                    },
+                    options: {
+                        responsive: true, // Chart adjusts size to the container
+                        maintainAspectRatio: false, // Chart's aspect ratio will be determined by the container's size
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Date' // Title for the X-axis
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Total Price ($)' // Title for the Y-axis
+                                },
+                                beginAtZero: true // Start the Y-axis at zero
+                            }
+                        },
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `$${parseFloat(context.raw).toFixed(2)}`; // Format tooltip value
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+        </script>
+
+
+
+</body>
+</html>

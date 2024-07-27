@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Delivery</title>
+    <style>
+        .detail-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
+        }
+        .detail-box h4 {
+            margin: 0 0 5px 0;
+        }
+        .detail-box img {
+            max-width: 100px;
+            max-height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Edit Delivery</h2>
+    
+    <!-- Display Delivery Details -->
+    <div class="detail-box">
+        <h4>Order Item Details:</h4>
+        <p>Product: {{ order_item.product.title }}</p>
+        <img src="{{ order_item.product.image.url }}" alt="{{ order_item.product.title }}">
+        <p>Quantity: {{ order_item.quantity }}</p>
+        <p>Order ID: {{ delivery.order_item.owner.id }}</p>
+    </div>
+    
+    <div class="detail-box">
+        <h4>Customer Details:</h4>
+        <p>Name: {{ customer.user.get_full_name }}</p>
+        <p>Email: {{ customer.user.email }}</p>
+        <p>Address: {{ customer.address }}</p>
+    </div>
+
+    <!-- Form for Editing Delivery -->
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save Changes</button>
+    </form>
+    
+    <a href="{% url 'delivery_dashboard' %}">Cancel</a>
+</body>
+</html>

@@ -1,0 +1,67 @@
+{% load static %}
+{% load multiply %}
+{% load gettotal %}
+
+<!-- Cart items details -->
+{% if cart and cart.added_items.all %}
+<div class="small-container cart-page">
+
+    <table>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Subtotal</th>
+        </tr>
+        {% for cart_item in cart.added_items.all %}
+        <tr>
+            <td>
+                <div class='cart-info'>
+                <img src="{{ cart_item.product.image.url }}">
+                    <div>
+                        <p>{{cart_item.product.title}}</p>
+                        <small>Price: ${{ cart_item.product.price }} </small>
+                        <br>
+                        <a href="{% url 'remove_item' cart_item.id %}">Remove</a>
+                    </div>
+                </div>
+            </td>
+            <td><input type="number" disabled value="{{ cart_item.quantity }}"></td>
+            <td>${% multiply cart_item.product.price  cart_item.quantity %}</td>
+        </tr>
+        {% endfor %}  
+    </tbody>
+    </table>
+    <div class="total-price">
+        <table>
+            <tr>
+                <td>Subtotal</td>
+                <td>${% gettotal cart %}</td>
+            </tr>
+            <tr>
+                <td>Tax</td>
+                <td>$00.00</td>
+            </tr>
+            <tr>
+                <td>Total</td>
+                <td>${% gettotal cart %}</td>
+            </tr>
+            <tr><td colspan='2'></td><td>
+                <!--<form method='post' action="{% url 'checkout' %}" enctype='multipart/form-data'>
+                    {% csrf_token %}
+                <input type='hidden' name='total' value='{% gettotal cart %}' >
+                <button class="confirm-button" type="submit">CHECK OUT</button>
+                </form>-->
+
+                <form method="post" action="{% url 'payment' %}" enctype='multipart/form-data' >
+                    {% csrf_token %}
+                    <input type="hidden" name="total" value="{% gettotal cart %}">
+                    <button class="confirm-button" type="submit">CHECK OUT</button>
+                </form>
+
+            </td></tr>
+        </table>
+    </div>
+{% else %}
+<p>CART IS EMPTY</p>
+{% endif %}
+</div>
